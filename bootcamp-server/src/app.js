@@ -1,30 +1,22 @@
 import express from 'express';
-import dotenv from 'dotenv'
-//load env vars
-dotenv.config({path: './config/config.env'})
+import appRoutes from './router/api.routes.js';
+import { config } from './config/index.js'
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
-const router = express.Router();
+
+const { env, PORT} = config;
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }))
 
-const PORT = process.env.PORT || 9000
-const mode = process.env.PORT
+app.use('/api', appRoutes);
 
-console.log(mode)
-
-router.get('/', (req, res) => {
-     res.json({'Hello World!': 'Welcome to the bootcamp server'});
-
-})
-
-router.get('/api/v1/bootcamp', (req, res) => {
-     res.json({'Hello World!': 'Welcome to the bootcamp server'});
-})
-
-app.use(router);
 
 app.listen(PORT, () => {
-     console.log(`listening in ${mode} mode on port ${process.env.PORT}`);
+     console.log(`listening in ${env} mode on port ${PORT}`);
 })
 
 export default app;

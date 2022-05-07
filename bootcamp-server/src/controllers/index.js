@@ -1,0 +1,1 @@
+export {default as testControllers} from './test.controllers.js';
