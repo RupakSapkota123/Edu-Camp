@@ -1,4 +1,5 @@
 import winston from 'winston';
+import morgan from 'morgan';
 import config from './config.js';
 
 const enumerateErrorFormat = winston.format((info) => {
@@ -25,7 +26,9 @@ const logger = winston.createLogger({
 
 //* Logs the request to console
 export const logRequest = (req, res, next) => {
-  logger.info(`${req.method} ${req.originalUrl}`);
+  if (config.env === 'development') {
+    morgan('dev');
+  }
   next();
 };
 

@@ -1,14 +1,26 @@
+import mongoose from 'mongoose';
+import colors from 'colors';
+
 import app from './app.js';
 import { config, logger } from './config/index.js';
 
+/*
+ * Connect to the database
+ * @server {Object}
+ */
 let server;
-// mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
-//   logger.info('Connected to MongoDB');
-// });
-
-app.listen(config.PORT, () => {
-  logger.info(`Listening on ${config.env} mode from port ${config.PORT}`);
+mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
+  logger.info(`Connected to MongoDB`.cyan.underline.bold);
+  server = app.listen(config.PORT, () => {
+    logger.info(`Listening on ${config.env} mode from port ${config.PORT}`.yellow.bold);
+  });
 });
+
+/*
+ * @exitHandler {Function} - will be called on process exit
+ * @unexpectedErrorHandler {Function} - will be called on unexpected error
+ */
+
 const exitHandler = () => {
   if (server) {
     server.close(() => {

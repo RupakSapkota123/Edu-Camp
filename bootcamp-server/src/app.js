@@ -6,12 +6,12 @@ import httpStatus from 'http-status';
 import helmet from 'helmet';
 import xss from 'xss-clean';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
+import morgan from 'morgan';
 
 import appRoutes from './router/api.routes.js';
 import { error, rateLimiter } from './middlewares/index.js';
 import { ApiError } from './utils/index.js';
 import { config } from './config/index.js';
-import { logRequest } from './config/logger.js';
 
 const app = express();
 
@@ -37,8 +37,10 @@ if (config.env === 'production') {
   app.use('api/v1/auth', rateLimiter);
 }
 
-//* log all requests
-app.use(logRequest);
+//* log requests
+if (config.env === 'development') {
+  app.use(morgan('dev'));
+}
 
 //* v1 api routes
 app.use('/api/v1', appRoutes);
