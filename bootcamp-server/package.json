@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "NODE_ENV=production node ./src/app.js"
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "start": "pm2 start ./ecosystem.config.json --no-daemon",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --check **/*.js",
+    "prettier:fix": "prettier --write **/*.js"
   },
   "repository": {
     "type": "git",
@@ -22,15 +26,19 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
     "express": "^4.18.1",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.4.0",
     "helmet": "^5.0.2",
     "hpp": "^0.2.3",
+    "http-status": "^1.5.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.2",
     "morgan": "^1.10.0",
     "node-geocoder": "^4.0.0",
     "nodemailer": "^6.7.5",
@@ -43,6 +51,7 @@
   "devDependencies": {
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-security": "^1.5.0",

@@ -1,22 +1,53 @@
 import express from 'express';
-import appRoutes from './router/api.routes.js';
-import { config } from './config/index.js'
 import cors from 'cors';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import bodyParser from 'body-parser';
+import httpStatus from 'http-status';
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import ExpressMongoSanitize from 'express-mongo-sanitize';
 
+import appRoutes from './router/api.routes.js';
+import { error, rateLimiter } from './middlewares/index.js';
+import { ApiError } from './utils/index.js';
+import { config } from './config/index.js';
 
-const { env, PORT} = config;
 const app = express();
 
+//* set security HTTP headers
+app.use(helmet());
+
+//* enable cors
 app.use(cors());
+app.options('*', cors());
+
+//* parse json request body
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use('/api', appRoutes);
+//* sanitize request data
+app.use(xss());
+app.use(ExpressMongoSanitize());
 
+//* parse urlencoded request body
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.listen(PORT, () => {
-     console.log(`listening in ${env} mode on port ${PORT}`);
-})
+//! limit repeated failed requests to auth endpoints
+if (config.env === 'production') {
+  app.use('api/v1/auth', rateLimiter);
+}
+
+//* v1 api routes
+app.use('/api/v1', appRoutes);
+
+//* send back a 404 error for any unknown api request
+app.use((req, res, next) => {
+  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+});
+
+//* convert error to ApiError, if needed
+app.use(error.errorConverter);
+
+//* handle error
+app.use(error.errorHandler);
 
 export default app;

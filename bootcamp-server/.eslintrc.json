@@ -1,15 +1,28 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
-    },
+        "es2021": true,
+        "node": true
+        },
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "plugin:prettier/recommended",
+        "plugin:security/recommended"
+    ],
+    "plugins":[
+        "prettier",
+        "security"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
     "rules": {
+        "no-console": "error",
+        "func-names": "off",
+        "no-underscore-dangle": "off",
+        "consistent-return": "off",
+        "security/detect-object-injection": "off",
+        "import/extensions": "off"
     }
 }
