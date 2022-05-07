@@ -23,4 +23,10 @@ const logger = winston.createLogger({
   ],
 });
 
+//* Logs the request to console
+export const logRequest = (req, res, next) => {
+  logger.info(`${req.method} ${req.originalUrl}`);
+  next();
+};
+
 export default logger;

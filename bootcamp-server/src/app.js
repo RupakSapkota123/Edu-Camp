@@ -11,6 +11,7 @@ import appRoutes from './router/api.routes.js';
 import { error, rateLimiter } from './middlewares/index.js';
 import { ApiError } from './utils/index.js';
 import { config } from './config/index.js';
+import { logRequest } from './config/logger.js';
 
 const app = express();
 
@@ -35,6 +36,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 if (config.env === 'production') {
   app.use('api/v1/auth', rateLimiter);
 }
+
+//* log all requests
+app.use(logRequest);
 
 //* v1 api routes
 app.use('/api/v1', appRoutes);
