@@ -2,17 +2,19 @@
   "name": "b00tcamp-finder",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/app.js",
+    "start": "NODE_ENV=production node ./src/app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RupakSapkota123/B00tCamp-Finder.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Rupak Sapkota",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/RupakSapkota123/B00tCamp-Finder/issues"
   },
@@ -22,14 +24,17 @@
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
+    "express": "^4.18.1",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.4.0",
     "helmet": "^5.0.2",
     "hpp": "^0.2.3",
+    "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "node-geocoder": "^4.0.0",
     "nodemailer": "^6.7.5",
+    "nodemon": "^2.0.16",
     "pm2": "^5.2.0",
     "slugify": "^1.6.5",
     "xss-clean": "^0.1.1"
