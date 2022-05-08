@@ -1,3 +1,5 @@
+import { Bootcamp } from '../schema/index.js';
+
 const getAllBootcamps = async (body) => {
   try {
     return await body;
@@ -17,7 +19,8 @@ const getSingleBootcamp = async (id) => {
 
 const createBootcamp = async (body) => {
   try {
-    return await body;
+    const bootcamp = await Bootcamp.create(body);
+    return bootcamp;
   } catch (err) {
     return err;
   }

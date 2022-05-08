@@ -45,7 +45,7 @@ const getSingleBootcamp = CatchAsync(async (req, res) => {
  */
 const createBootcamp = CatchAsync(async (req, res) => {
   try {
-    const bootcamps = await bootcampsServices.createBootcamp('Bootcamp created');
+    const bootcamps = await bootcampsServices.createBootcamp(req.body);
     res.status(httpStatus.CREATED, 'Bootcamp created successfully').json({ bootcamps, success: true });
   } catch (err) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ success: false, message: err.message });
