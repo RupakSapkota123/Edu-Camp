@@ -1,5 +1,10 @@
 import { Bootcamp } from '../schema/index.js';
 
+/**
+ * @desc: get all bootcamps
+ * @param {Object} body
+ * @returns {Promise<Bootcamp>}
+ */
 const getAllBootcamps = async (body) => {
   try {
     const bootcamps = await Bootcamp.find({ body });
@@ -9,6 +14,11 @@ const getAllBootcamps = async (body) => {
   }
 };
 
+/**
+ * @desc: get single bootcamps
+ * @param {ObjectId} id
+ * @returns {Promise<Bootcamp>}
+ */
 const getSingleBootcamp = async (id) => {
   const bootcamp = await Bootcamp.findById(id);
 
@@ -20,11 +30,22 @@ const getSingleBootcamp = async (id) => {
   return bootcamp;
 };
 
+/**
+ * @desc: Create New Bootcamps
+ * @param {Object} body
+ * @returns {Promise<Bootcamp>}
+ */
 const createBootcamp = async (body) => {
   const bootcamp = await Bootcamp.create(body);
   return bootcamp;
 };
 
+/**
+ * @desc: Update Bootcamp
+ * @param {ObjectId} id
+ * @param {Object} body
+ * @returns {Promise<Bootcamp>}
+ */
 const updateBootcampById = async (id, bootcampBody) => {
   const bootcamp = await getSingleBootcamp(id);
   if (!bootcamp || bootcamp === null) {
@@ -38,6 +59,11 @@ const updateBootcampById = async (id, bootcampBody) => {
   return bootcamp;
 };
 
+/**
+ * @desc: Delete Bootcamp
+ * @param {ObjectId} id
+ * @returns {Promise<Bootcamp>}
+ */
 const deleteBootcampById = async (id) => {
   const bootcamp = await getSingleBootcamp(id);
   if (!bootcamp || bootcamp === null) {
