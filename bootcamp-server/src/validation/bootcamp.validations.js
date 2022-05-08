@@ -32,7 +32,7 @@ const createBootcamp = {
   jobAssistance: Joi.boolean().default(false),
   jobGuarantee: Joi.boolean().default(false),
   acceptGi: Joi.boolean().default(false),
-  user: objectID.required(),
+  user: Joi.string().required(),
   createdAt: Joi.date().default(moment().format('YYYY-MM-DD')),
 };
 
@@ -65,10 +65,10 @@ const getAllBootcamps = {
   jobAssistance: Joi.boolean().default(false),
   jobGuarantee: Joi.boolean().default(false),
   acceptGi: Joi.boolean().default(false),
-  user: objectID.required(),
+  user: Joi.string().required(),
   createdAt: Joi.date().default(moment().format('YYYY-MM-DD')),
   limit: Joi.number().min(1).default(10),
-  page: Joi.integer().min(1).default(1),
+  page: Joi.number().min(1).default(1),
 };
 
 const getSingleBootcamp = {
@@ -109,7 +109,7 @@ const updateBootcampById = {
       jobAssistance: Joi.boolean().default(false),
       jobGuarantee: Joi.boolean().default(false),
       acceptGi: Joi.boolean().default(false),
-      user: objectID.required(),
+      user: Joi.string().required(),
       createdAt: Joi.date().default(moment().format('YYYY-MM-DD')),
     })
     .min(1),
