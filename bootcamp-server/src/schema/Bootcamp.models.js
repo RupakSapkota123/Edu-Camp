@@ -106,8 +106,18 @@ BootcampSchema.plugin(toJSON);
  *@param {ObjectId} [excludeUserId] - The id of the bootcamp to be excluded
  *@returns {Promise<boolean>}
  */
-BootcampSchema.statics.isNameTaken = async (name, excludeUserId) => {
-  const bootcamp = await this.findOne({ name, _id: { $ne: excludeUserId } });
+BootcampSchema.statics.isNameTaken = async (name, excludeBootcampId) => {
+  const bootcamp = await this.findOne({ name, _id: { $ne: excludeBootcampId } });
+  return !!bootcamp;
+};
+
+/**
+ * check if given id is available or not
+ * @param {ObjectId} id - The bootcamp's id
+ * @returns {Promise<boolean>}
+ */
+BootcampSchema.statics.isIdAvailable = async (id) => {
+  const bootcamp = await this.findById(id);
   return !!bootcamp;
 };
 

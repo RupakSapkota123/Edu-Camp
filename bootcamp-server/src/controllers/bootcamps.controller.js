@@ -12,7 +12,7 @@ import { ApiError, CatchAsync } from '../utils/index.js';
  */
 const getAllBootcamps = CatchAsync(async (req, res) => {
   try {
-    const bootcamps = await bootcampsServices.getAllBootcamps('test success');
+    const bootcamps = await bootcampsServices.getAllBootcamps(req.body);
     res.status(200).json({ bootcamps, success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -35,6 +35,14 @@ const getSingleBootcamp = CatchAsync(async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+/*
+ * @desc: get single bootcamps
+ * @route: GET /api/v1/bootcamps/:id
+ * @access: public
+ * @return: json
+ * @catch: ApiError
+ */
 
 /*
  * @desc: Create New Bootcamps

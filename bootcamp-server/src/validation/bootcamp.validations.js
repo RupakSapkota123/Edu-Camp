@@ -70,13 +70,19 @@ const getAllBootcamps = {
 
 const getSingleBootcamp = {
   params: Joi.object().keys({
-    bootcampID: Joi.string().required().custom(objectID),
+    id: Joi.string().custom(objectID),
+  }),
+};
+
+const getBootcampByUserId = {
+  params: Joi.object().keys({
+    id: Joi.string().custom(objectID),
   }),
 };
 
 const updateBootcampById = {
   params: Joi.object().keys({
-    bootcampID: Joi.string().required().custom(objectID),
+    id: Joi.string().required().custom(objectID),
   }),
   body: Joi.object()
     .keys({
@@ -86,6 +92,16 @@ const updateBootcampById = {
       phone: Joi.string().max(10),
       email: Joi.string().email(),
       address: Joi.string().required('Please add an address'),
+      careers: Joi.array().items(Joi.string()).required('Please add at least one career'),
+      housing: Joi.boolean().default(false),
+      averageRating: Joi.number().min(1).max(10).default(0),
+      averageCost: Joi.number().default(0),
+      photo: Joi.string().default('no-photo.jpg'),
+      jobAssistance: Joi.boolean().default(false),
+      jobGuarantee: Joi.boolean().default(false),
+      acceptGi: Joi.boolean().default(false),
+      user: Joi.string().required(),
+      createdAt: Joi.date().default(moment().format('YYYY-MM-DD')),
       location: Joi.object()
         .keys({
           type: Joi.string().valid('Point'),
@@ -98,29 +114,20 @@ const updateBootcampById = {
           country: Joi.string(),
         })
         .required('Please add a location'),
-      careers: Joi.array().items(Joi.string()).required('Please add at least one career'),
-      housing: Joi.boolean().default(false),
-      averageRating: Joi.number().min(1).max(10).default(0),
-      averageCost: Joi.number().default(0),
-      photo: Joi.string().default('no-photo.jpg'),
-      jobAssistance: Joi.boolean().default(false),
-      jobGuarantee: Joi.boolean().default(false),
-      acceptGi: Joi.boolean().default(false),
-      user: Joi.string().required(),
-      createdAt: Joi.date().default(moment().format('YYYY-MM-DD')),
     })
     .min(1),
 };
 
 const deleteBootcampById = {
   params: Joi.object().keys({
-    bootcampID: Joi.string().required().custom(objectID),
+    id: Joi.string().required().custom(objectID),
   }),
 };
 
 export default {
   createBootcamp,
   getAllBootcamps,
+  getBootcampByUserId,
   getSingleBootcamp,
   updateBootcampById,
   deleteBootcampById,

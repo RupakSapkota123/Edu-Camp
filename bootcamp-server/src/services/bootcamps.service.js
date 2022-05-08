@@ -2,19 +2,22 @@ import { Bootcamp } from '../schema/index.js';
 
 const getAllBootcamps = async (body) => {
   try {
-    return await body;
+    const bootcamps = await Bootcamp.find({ body });
+    return bootcamps;
   } catch (err) {
     return err;
   }
 };
 
 const getSingleBootcamp = async (id) => {
-  try {
-    const message = `get single bootcamp ${id}`;
-    return message;
-  } catch (err) {
-    return err;
+  const bootcamp = await Bootcamp.findById(id);
+
+  //* check if bootcamp exists
+  if (!bootcamp || bootcamp === null) {
+    throw new Error('Bootcamp not found');
   }
+
+  return bootcamp;
 };
 
 const createBootcamp = async (body) => {
