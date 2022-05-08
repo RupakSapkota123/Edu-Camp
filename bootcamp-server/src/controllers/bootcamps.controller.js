@@ -70,7 +70,7 @@ const createBootcamp = CatchAsync(async (req, res) => {
 const updateBootcampById = CatchAsync(async (req, res) => {
   try {
     const { id } = await req.params;
-    const bootcamps = await bootcampsServices.updateBootcampById(id);
+    const bootcamps = await bootcampsServices.updateBootcampById(id, req.body);
     res.status(200).json({ bootcamps, success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

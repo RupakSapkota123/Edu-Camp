@@ -21,30 +21,30 @@ const getSingleBootcamp = async (id) => {
 };
 
 const createBootcamp = async (body) => {
-  try {
-    const bootcamp = await Bootcamp.create(body);
-    return bootcamp;
-  } catch (err) {
-    return err;
-  }
+  const bootcamp = await Bootcamp.create(body);
+  return bootcamp;
 };
 
-const updateBootcampById = async (id) => {
-  try {
-    const message = `update bootcamp ${id}`;
-    return message;
-  } catch (err) {
-    return err;
+const updateBootcampById = async (id, bootcampBody) => {
+  const bootcamp = await getSingleBootcamp(id);
+  if (!bootcamp || bootcamp === null) {
+    throw new Error('Bootcamp not found');
   }
+  if (await Bootcamp.findByName(bootcampBody.name)) {
+    throw new Error('Bootcamp name is taken');
+  }
+  Object.assign(bootcamp, bootcampBody);
+  await bootcamp.save();
+  return bootcamp;
 };
 
 const deleteBootcampById = async (id) => {
-  try {
-    const message = `delete bootcamp ${id}`;
-    return message;
-  } catch (err) {
-    return err;
+  const bootcamp = await getSingleBootcamp(id);
+  if (!bootcamp || bootcamp === null) {
+    throw new Error('Bootcamp not found');
   }
+  await bootcamp.remove();
+  return bootcamp;
 };
 
 export default {

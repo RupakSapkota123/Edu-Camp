@@ -94,26 +94,24 @@ const updateBootcampById = {
       address: Joi.string().required('Please add an address'),
       careers: Joi.array().items(Joi.string()).required('Please add at least one career'),
       housing: Joi.boolean().default(false),
-      averageRating: Joi.number().min(1).max(10).default(0),
+      averageRating: Joi.number().min(1).max(10),
       averageCost: Joi.number().default(0),
       photo: Joi.string().default('no-photo.jpg'),
       jobAssistance: Joi.boolean().default(false),
       jobGuarantee: Joi.boolean().default(false),
       acceptGi: Joi.boolean().default(false),
-      user: Joi.string().required(),
+      // user: Joi.string().required(),
       createdAt: Joi.date().default(moment().format('YYYY-MM-DD')),
-      location: Joi.object()
-        .keys({
-          type: Joi.string().valid('Point'),
-          coordinates: Joi.array().items(Joi.number()),
-          formattedAddress: Joi.string(),
-          street: Joi.string(),
-          city: Joi.string(),
-          state: Joi.string(),
-          zipcode: Joi.string(),
-          country: Joi.string(),
-        })
-        .required('Please add a location'),
+      location: Joi.object().keys({
+        type: Joi.string().valid('Point'),
+        coordinates: Joi.array().items(Joi.number()),
+        formattedAddress: Joi.string(),
+        street: Joi.string(),
+        city: Joi.string(),
+        state: Joi.string(),
+        zipcode: Joi.string(),
+        country: Joi.string(),
+      }),
     })
     .min(1),
 };
