@@ -12,6 +12,7 @@ import appRoutes from './router/api.routes.js';
 import { error, rateLimiter } from './middlewares/index.js';
 import { ApiError } from './utils/index.js';
 import { config } from './config/index.js';
+import socket from './config/socket.js';
 
 const app = express();
 
@@ -32,21 +33,16 @@ app.use(ExpressMongoSanitize());
 //* parse urlencoded request body
 app.use(bodyParser.urlencoded({ extended: false }));
 
+socket(app);
+
 //! limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
-                                                                                app.use(
-                                                                                                                                                                'api/v1/auth',
-                                                                                                                                                                rateLimiter,
-                                                                                );
+  app.use('api/v1/auth', rateLimiter);
 }
 
 //* log requests
 if (config.env === 'development') {
-                                                                                app.use(
-                                                                                                                                                                morgan(
-                                                                                                                                                                                                                                                'dev',
-                                                                                                                                                                ),
-                                                                                );
+  app.use(morgan('dev'));
 }
 
 //* v1 api routes
@@ -54,12 +50,7 @@ app.use('/api/v1', appRoutes);
 
 //* send back a 404 error for any unknown api request
 app.use((req, res, next) => {
-                                                                                next(
-                                                                                                                                                                new ApiError(
-                                                                                                                                                                                                                                                httpStatus.NOT_FOUND,
-                                                                                                                                                                                                                                                'Not found',
-                                                                                                                                                                ),
-                                                                                );
+  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
 });
 
 //* convert error to ApiError, if needed
