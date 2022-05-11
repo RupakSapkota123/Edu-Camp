@@ -15,28 +15,53 @@ dotenv.config({ path: path.join(__dirname, './config.env') });
  */
 
 const envVarsSchema = Joi.object()
-  .keys({
-    NODE_ENV: Joi.string().valid('development', 'production').default('development'),
-    PORT: Joi.number().default(9000),
-    MongoDB_URL: Joi.string().description('MongoDB connection URL'),
-  })
-  .unknown();
+                                                                                .keys(
+                                                                                                                                                                {
+                                                                                                                                                                                                                                                NODE_ENV: Joi.string()
+                                                                                                                                                                                                                                                                                                                                .valid(
+                                                                                                                                                                                                                                                                                                                                                                                                                'development',
+                                                                                                                                                                                                                                                                                                                                                                                                                'production',
+                                                                                                                                                                                                                                                                                                                                )
+                                                                                                                                                                                                                                                                                                                                .default(
+                                                                                                                                                                                                                                                                                                                                                                                                                'development',
+                                                                                                                                                                                                                                                                                                                                ),
+                                                                                                                                                                                                                                                PORT: Joi.number().default(
+                                                                                                                                                                                                                                                                                                                                9000,
+                                                                                                                                                                                                                                                ),
+                                                                                                                                                                                                                                                MongoDB_URL: Joi.string().description(
+                                                                                                                                                                                                                                                                                                                                'MongoDB connection URL',
+                                                                                                                                                                                                                                                ),
+                                                                                                                                                                },
+                                                                                )
+                                                                                .unknown();
 
-const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
+const { value: envVars, error } = envVarsSchema
+                                                                                .prefs(
+                                                                                                                                                                {
+                                                                                                                                                                                                                                                errors: {
+                                                                                                                                                                                                                                                                                                                                label: 'key',
+                                                                                                                                                                                                                                                },
+                                                                                                                                                                },
+                                                                                )
+                                                                                .validate(
+                                                                                                                                                                process.env,
+                                                                                );
 
 if (error) {
-  throw new Error(`Config validation error: ${error.message}`);
+                                                                                throw new Error(
+                                                                                                                                                                `Config validation error: ${error.message}`,
+                                                                                );
 }
 const config = {
-  env: envVars.NODE_ENV,
-  PORT: envVars.PORT,
-  mongoose: {
-    url: envVars.MongoDB_URL,
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    },
-  },
+                                                                                env: envVars.NODE_ENV,
+                                                                                PORT: envVars.PORT,
+                                                                                mongoose: {
+                                                                                                                                                                url: envVars.MongoDB_URL,
+                                                                                                                                                                options: {
+                                                                                                                                                                                                                                                useNewUrlParser: true,
+                                                                                                                                                                                                                                                useUnifiedTopology: true,
+                                                                                                                                                                },
+                                                                                },
 };
 
 export default config;

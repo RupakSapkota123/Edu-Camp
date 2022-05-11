@@ -34,12 +34,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //! limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
-  app.use('api/v1/auth', rateLimiter);
+                                                                                app.use(
+                                                                                                                                                                'api/v1/auth',
+                                                                                                                                                                rateLimiter,
+                                                                                );
 }
 
 //* log requests
 if (config.env === 'development') {
-  app.use(morgan('dev'));
+                                                                                app.use(
+                                                                                                                                                                morgan(
+                                                                                                                                                                                                                                                'dev',
+                                                                                                                                                                ),
+                                                                                );
 }
 
 //* v1 api routes
@@ -47,7 +54,12 @@ app.use('/api/v1', appRoutes);
 
 //* send back a 404 error for any unknown api request
 app.use((req, res, next) => {
-  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+                                                                                next(
+                                                                                                                                                                new ApiError(
+                                                                                                                                                                                                                                                httpStatus.NOT_FOUND,
+                                                                                                                                                                                                                                                'Not found',
+                                                                                                                                                                ),
+                                                                                );
 });
 
 //* convert error to ApiError, if needed

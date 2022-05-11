@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-unsafe-regex */
 import mongoose from 'mongoose';
 
 import { toJSON } from './plugins/index.js';
@@ -107,7 +108,12 @@ BootcampSchema.plugin(toJSON);
  *@returns {Promise<boolean>}
  */
 BootcampSchema.statics.findByName = async function (name, excludeId) {
-  const bootcamp = await this.findOne({ name, _id: { $ne: excludeId } });
+  const bootcamp = await this.findOne({
+    name,
+    _id: {
+      $ne: excludeId,
+    },
+  });
   console.log(bootcamp);
   return !!bootcamp;
 };
