@@ -4,7 +4,8 @@ import moment from 'moment';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-import { toJSON } from './plugins';
+import toJSON from './plugins/toJSON.js';
+import paginate from './plugins/paginate.js';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -13,7 +14,6 @@ const UserSchema = new mongoose.Schema({
     minlength: [3, 'Name must be at least 3 chars.'],
     maxlength: [20, "Name can't be more than 20 chars."],
     trim: true,
-    unique: [true, 'Name must be unique.'],
   },
   email: {
     type: String,
@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema({
       minlength: [8, 'Password must be at least 6 chars.'],
       maxlength: [12, "Password can't be more than 12 chars."],
       select: false,
-      private: true,
+      //  private: true,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -51,6 +51,7 @@ const UserSchema = new mongoose.Schema({
 
 //* Add the plugin to the schema
 UserSchema.plugin(toJSON);
+UserSchema.plugin(paginate);
 
 /**
  * check if email is Taken or not
