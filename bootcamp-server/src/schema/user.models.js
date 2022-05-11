@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable security/detect-unsafe-regex */
 import moment from 'moment';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
