@@ -6,7 +6,7 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export interface IRootReducer {
   auth: IUser;
   profile: IProfile;
-  errors: IError;
+  error: IError;
   modal: IModalState;
   loading: TLoading;
   newsFeed: INewsFeed;

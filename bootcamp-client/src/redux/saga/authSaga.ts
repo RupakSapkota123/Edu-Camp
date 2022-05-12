@@ -32,8 +32,8 @@ function* authSaga({ type, payload }: IAuthSaga) {
         yield put(registerSuccess(user));
         yield put(isAuthenticating(false));
       } catch (e: any) {
-        console.log("e", e);
-        yield handleError(e);
+        console.log("e*****", e.message);
+        yield handleError(e.message);
       }
       break;
     default:

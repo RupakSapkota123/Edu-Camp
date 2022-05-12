@@ -20,16 +20,13 @@ const index = () => {
 
   const { isLoading, error } = useSelector((state: IRootReducer) => ({
     isLoading: state.loading.isLoadingAuth,
-    error: state?.errors?.error,
+    error: state.error.authError,
   }));
-
-  console.log("error", error);
 
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data: any) => {
     const { email, password, username, name } = data;
-    console.log(data.username);
     dispatch(registerStart({ name, email, password, username }));
   };
   return (
@@ -38,6 +35,7 @@ const index = () => {
       {isLoading ? (
         <div>
           <Spin />
+          <p>Loading.....</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -48,10 +46,10 @@ const index = () => {
           <button type="submit">submit</button>
         </form>
       )}
-      {error?.message && (
+      {error && (
         <div className="p-4 w-full text-center bg-red-100 border-red-400 absolute top-0 left-0">
           <p className="text-red-500 text-sm">
-            {error?.message || "Something went wrong :("}
+            {error || "Something went wrong :("}
           </p>
         </div>
       )}
