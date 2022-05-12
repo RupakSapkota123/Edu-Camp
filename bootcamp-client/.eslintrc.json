@@ -43,6 +43,8 @@
          "react/react-in-jsx-scope": "off",
          "react/jsx-props-no-spreading": "warn",
          "no-shadow": "off",
-         "no-console": "warn"
+         "no-console": "warn",
+         "no-unused-vars": "warn",
+         "@typescript-eslint/no-unused-vars": "warn"
     }
 }

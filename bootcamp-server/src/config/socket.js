@@ -16,6 +16,7 @@ export default function (app, server) {
   app.set('io', io);
 
   io.on('connection', (socket) => {
+    console.log('a user connected');
     socket.on('userConnect', (id) => {
       User.findById(id)
         .then((user) => {
@@ -44,6 +45,9 @@ export default function (app, server) {
 
     socket.on('disconnect', () => {
       console.log('Client disconnected');
+    });
+    socket.on('jack', (arg) => {
+      console.log(arg);
     });
   });
 }

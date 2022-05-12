@@ -1,7 +1,5 @@
-import React from 'react';
+import React from "react";
 
-const withAuth = () => (
-  <div>withAuth</div>
-);
+const withAuth = () => <div>withAuth</div>;
 
 export default withAuth;

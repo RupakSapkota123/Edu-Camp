@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import xss from 'xss-clean';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 import morgan from 'morgan';
+import http from 'http';
 
 import appRoutes from './router/api.routes.js';
 import { error, rateLimiter } from './middlewares/index.js';
@@ -26,6 +27,8 @@ app.options('*', cors());
 //* parse json request body
 app.use(express.json());
 
+const server = http.createServer(app);
+
 //* sanitize request data
 app.use(xss());
 app.use(ExpressMongoSanitize());
@@ -33,7 +36,7 @@ app.use(ExpressMongoSanitize());
 //* parse urlencoded request body
 app.use(bodyParser.urlencoded({ extended: false }));
 
-socket(app);
+socket(app, server);
 
 //! limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
@@ -59,4 +62,4 @@ app.use(error.errorConverter);
 //* handle error
 app.use(error.errorHandler);
 
-export default app;
+export { app, server };
