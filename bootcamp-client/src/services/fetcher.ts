@@ -39,10 +39,10 @@ const httpRequest = <T>(req: AxiosRequestConfig): Promise<T> => {
   return new Promise(async (resolve, reject) => {
     try {
       const request = await axios(req);
-      console.log("request", request.data);
       resolve(request.data);
     } catch (e: any) {
-      reject(e?.response?.data || {});
+         console.log("e", e?.response?.data?.message);
+         reject(e?.response?.data || {});
     }
   });
 };

@@ -2,6 +2,7 @@
 import { REGISTER_START } from "constants/actionType";
 import { call, put, select } from "redux-saga/effects";
 import { registerSuccess } from "redux/actions/authActions";
+import { setAuthErrorMessage } from "redux/actions/errorActions";
 
 import { register } from "services/api";
 import socket from "socket/socket";
@@ -13,9 +14,13 @@ interface IAuthSaga {
   payload: any;
 }
 
-// function* handleError(e: IError){
-//      yield put({isAuth})
-// }
+function* handleError(e: IError) {
+  yield put(isAuthenticating(false));
+
+  console.log("e===>", e);
+
+  yield put(setAuthErrorMessage(e));
+}
 
 function* authSaga({ type, payload }: IAuthSaga) {
   switch (type) {
@@ -23,12 +28,12 @@ function* authSaga({ type, payload }: IAuthSaga) {
       try {
         yield put(isAuthenticating(true));
         const user: IUser = yield call(register, payload);
-        console.log("user", user.user);
         socket.emit("userConnect", user.user.id);
         yield put(registerSuccess(user));
         yield put(isAuthenticating(false));
-      } catch (e) {
+      } catch (e: any) {
         console.log("e", e);
+        yield handleError(e);
       }
       break;
     default:

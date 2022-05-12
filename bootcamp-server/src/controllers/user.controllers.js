@@ -55,7 +55,6 @@ const createUser = CatchAsync(async (req, res) => {
   } catch (err) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       message: err.message,
-      status: httpStatus.INTERNAL_SERVER_ERROR,
     });
   }
 });
