@@ -24,7 +24,7 @@ const getUser = CatchAsync(async (req, res) => {
     if (!user || user === null) {
       throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
     }
-    res.status(httpStatus.OK).json({ user, success: true });
+    res.status(httpStatus.OK).json(user);
   } catch (err) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       message: err.message,
