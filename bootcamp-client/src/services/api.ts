@@ -13,6 +13,12 @@ export const register = ({ email, password, username, name }: IRegister) =>
     },
   });
 
+export const fetchUser = (userId: string) =>
+  httpRequest<IUser>({
+    method: "GET",
+    url: `/user/${userId}`,
+  });
+
 export const logout = () =>
   httpRequest<any>({
     method: "POST",

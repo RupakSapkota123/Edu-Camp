@@ -8,7 +8,6 @@ import {
 import { IError } from "types/types";
 
 export const setAuthErrorMessage = (error: IError | null) =>
-  //   console.log("error", error);
   <const>{
     type: SET_AUTH_ERR_MSG,
     payload: error,

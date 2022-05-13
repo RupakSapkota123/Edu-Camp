@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Spin } from "antd";
 import React from "react";
@@ -6,10 +7,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { registerStart } from "redux/actions/authActions";
 import { setAuthErrorMessage } from "redux/actions/errorActions";
+import { getUserSuccess } from "redux/actions/profileActions";
 import { IRootReducer } from "types/types";
 
 const index = () => {
   const dispatch = useDispatch();
+
+  const { isLoading, error, profile } = useSelector((state: IRootReducer) => ({
+    isLoading: state.loading.isLoadingAuth,
+    error: state.error.authError,
+    profile: state.profile,
+  }));
+
+  console.log("user===>", profile);
+  console.log("error===>", error);
 
   React.useEffect(() => {
     return () => {
@@ -17,11 +28,6 @@ const index = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const { isLoading, error } = useSelector((state: IRootReducer) => ({
-    isLoading: state.loading.isLoadingAuth,
-    error: state.error.authError,
-  }));
 
   const { register, handleSubmit } = useForm();
 
@@ -53,6 +59,7 @@ const index = () => {
           </p>
         </div>
       )}
+      <p>{profile ? `Welcome ${profile}` : "user not found"}</p>
     </>
   );
 };

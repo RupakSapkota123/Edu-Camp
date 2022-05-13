@@ -107,7 +107,7 @@ export interface IProfile {
     birthday: string;
     gender: string;
   };
-  isEmailValidated: string;
+  isEmailValidated: boolean;
   profilePicture?: Record<string, any>;
   coverPhoto?: Record<string, any>;
   dateJoined: Date | string;
@@ -126,7 +126,7 @@ export interface INotification {
   link: string;
 }
 
-export interface ISettingStatwe {
+export interface ISettingState {
   theme: "light" | "dark";
 }
 

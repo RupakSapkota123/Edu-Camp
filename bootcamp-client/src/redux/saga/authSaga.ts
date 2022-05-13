@@ -17,8 +17,6 @@ interface IAuthSaga {
 function* handleError(e: IError) {
   yield put(isAuthenticating(false));
 
-  console.log("e===>", e);
-
   yield put(setAuthErrorMessage(e));
 }
 
@@ -32,8 +30,8 @@ function* authSaga({ type, payload }: IAuthSaga) {
         yield put(registerSuccess(user));
         yield put(isAuthenticating(false));
       } catch (e: any) {
-        console.log("e*****", e.message);
-        yield handleError(e.message);
+        console.log("e=====", e.error);
+        yield handleError(e.error.message);
       }
       break;
     default:
