@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 import express from 'express';
 import cors from 'cors';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -7,8 +8,13 @@ import helmet from 'helmet';
 import xss from 'xss-clean';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 import morgan from 'morgan';
+import createError from 'http-errors';
 import http from 'http';
+import passport from 'passport';
+import hpp from 'hpp';
+import session from 'express-session';
 
+import csurf from 'csurf';
 import appRoutes from './router/api.routes.js';
 import { error, rateLimiter } from './middlewares/index.js';
 import { ApiError } from './utils/index.js';
@@ -21,9 +27,10 @@ const app = express();
 app.use(helmet());
 
 //* enable cors
-app.use(cors());
-app.options('*', cors());
+app.use(cors(config.cors));
+// app.use('trust proxy', );
 
+app.disable('x-powered-by');
 //* parse json request body
 app.use(express.json());
 
@@ -33,10 +40,18 @@ const server = http.createServer(app);
 app.use(xss());
 app.use(ExpressMongoSanitize());
 
+//* protect against http parameter pollution
+app.use(hpp());
+
 //* parse urlencoded request body
 app.use(bodyParser.urlencoded({ extended: false }));
 
 socket(app, server);
+
+//* enable session
+app.use(session(config.session));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //! limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
@@ -51,15 +66,19 @@ if (config.env === 'development') {
 //* v1 api routes
 app.use('/api/v1', appRoutes);
 
-//* send back a 404 error for any unknown api request
-app.use((req, res, next) => {
-  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+//* catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  next(createError(404));
 });
 
-//* convert error to ApiError, if needed
-app.use(error.errorConverter);
+//* error handler
+app.use(csurf());
+app.use(error);
 
-//* handle error
-app.use(error.errorHandler);
+server.on('error', (err) => {
+  if (err.syscall !== 'listen') {
+    throw err;
+  }
+});
 
 export { app, server };

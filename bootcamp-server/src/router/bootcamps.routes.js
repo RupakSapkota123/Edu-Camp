@@ -15,41 +15,31 @@ const router = express.Router();
 
 // eslint-disable-next-line prettier/prettier
 router
-  .route("/")
-                                                                                .get(
-                                                                                                                                                                validate(
-                                                                                                                                                                                                                                                bootcampValidation.getAllBootcamps,
-                                                                                                                                                                ),
-                                                                                                                                                                bootcampsControllers.getAllBootcamps,
-                                                                                )
-                                                                                .post(
-                                                                                                                                                                validate(
-                                                                                                                                                                                                                                                bootcampValidation.createBootcamp,
-                                                                                                                                                                ),
-                                                                                                                                                                bootcampsControllers.createBootcamp,
-                                                                                );
+  .route('/')
+  .get(
+    validate(bootcampValidation.getAllBootcamps),
+    bootcampsControllers.getAllBootcamps,
+  )
+  .post(
+    validate(bootcampValidation.createBootcamp),
+    bootcampsControllers.createBootcamp,
+  );
 
 // eslint-disable-next-line prettier/prettier
 router
-  .route("/:id")
-                                                                                .get(
-                                                                                                                                                                validate(
-                                                                                                                                                                                                                                                bootcampValidation.getSingleBootcamp,
-                                                                                                                                                                ),
-                                                                                                                                                                bootcampsControllers.getSingleBootcamp,
-                                                                                )
-                                                                                // .post(bootcampsControllers.createBootcampById)
-                                                                                .put(
-                                                                                                                                                                validate(
-                                                                                                                                                                                                                                                bootcampValidation.updateBootcampById,
-                                                                                                                                                                ),
-                                                                                                                                                                bootcampsControllers.updateBootcampById,
-                                                                                )
-                                                                                .delete(
-                                                                                                                                                                validate(
-                                                                                                                                                                                                                                                bootcampValidation.deleteBootcampById,
-                                                                                                                                                                ),
-                                                                                                                                                                bootcampsControllers.DeleteBootcampById,
-                                                                                );
+  .route('/:id')
+  .get(
+    validate(bootcampValidation.getSingleBootcamp),
+    bootcampsControllers.getSingleBootcamp,
+  )
+  // .post(bootcampsControllers.createBootcampById)
+  .put(
+    validate(bootcampValidation.updateBootcampById),
+    bootcampsControllers.updateBootcampById,
+  )
+  .delete(
+    validate(bootcampValidation.deleteBootcampById),
+    bootcampsControllers.DeleteBootcampById,
+  );
 
 export default router;

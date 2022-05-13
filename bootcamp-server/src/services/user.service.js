@@ -1,6 +1,6 @@
-import httpStatus from 'http-status';
-import { User } from '../schema/index.js';
-import { ApiError } from '../utils/index.js';
+import httpStatus from "http-status";
+import { User } from "../schema/index.js";
+import { ApiError } from "../utils/index.js";
 
 /**
  * Query for users
@@ -24,7 +24,7 @@ const queryUsers = async (filter, options) => {
 const getUser = async (id) => {
   const user = await User.findById(id);
   if (!user || user === null) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   return user;
 };
@@ -37,7 +37,7 @@ const getUser = async (id) => {
 const getUserByEmail = async (email) => {
   const user = await User.findOne({ email });
   if (!user || user === null) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   return user;
 };
@@ -49,7 +49,7 @@ const getUserByEmail = async (email) => {
  */
 const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.CONFLICT, 'Email is already taken');
+    throw new ApiError(httpStatus.CONFLICT, "Email is already taken");
   }
   return User.create(userBody);
 };
@@ -63,7 +63,7 @@ const createUser = async (userBody) => {
 const updateUser = async (userId, updateBody) => {
   const user = await getUser(userId);
   if (!user || user === null) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   Object.assign(user, updateBody);
   await user.save();
@@ -78,7 +78,7 @@ const updateUser = async (userId, updateBody) => {
 const deleteUser = async (userId) => {
   const user = await getUser(userId);
   if (!user || user === null) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   await user.remove();
   return user;

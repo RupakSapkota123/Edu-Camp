@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 const initState = {
   data: null,
@@ -13,7 +13,7 @@ const makeResponseJSON = (data, success) => {
     ...initState,
     data,
     success,
-    timeStamp: moment().format('YYYY-MM-DD HH:mm A'),
+    timeStamp: moment().format("YYYY-MM-DD HH:mm A"),
   };
 };
 

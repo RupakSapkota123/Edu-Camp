@@ -1,7 +1,12 @@
 import httpStatus from 'http-status';
 
 import { userServices } from '../services/index.js';
-import { ApiError, CatchAsync, pick } from '../utils/index.js';
+import {
+  ApiError,
+  CatchAsync,
+  pick,
+  makeResponseJSON,
+} from '../utils/index.js';
 
 const getUsers = CatchAsync(async (req, res) => {
   try {
@@ -17,7 +22,7 @@ const getUsers = CatchAsync(async (req, res) => {
   }
 });
 
-const getUser = CatchAsync(async (req, res) => {
+const getUser = CatchAsync(async (req, res, next) => {
   try {
     const { userId } = req.params;
     const user = await userServices.getUser(userId);
@@ -49,27 +54,14 @@ const getUserByEmail = CatchAsync(async (req, res) => {
 });
 
 const createUser = CatchAsync(async (req, res) => {
-  try {
-    const user = await userServices.createUser(req.body);
-    res.status(httpStatus.CREATED).json({ user, success: true });
-  } catch (err) {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: err.message,
-    });
-  }
+  const user = await userServices.createUser(req.body);
+  res.status(httpStatus.CREATED).send(makeResponseJSON(user));
 });
 
 const updateUser = CatchAsync(async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const user = await userServices.updateUser(userId, req.body);
-    res.status(httpStatus.OK).json({ user, success: true });
-  } catch (err) {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: err.message,
-      status: httpStatus.INTERNAL_SERVER_ERROR,
-    });
-  }
+  const { userId } = req.params;
+  const user = await userServices.updateUser(userId, req.body);
+  res.status(httpStatus.OK).send(makeResponseJSON(user));
 });
 
 const deleteUser = CatchAsync(async (req, res) => {

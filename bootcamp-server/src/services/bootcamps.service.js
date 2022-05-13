@@ -1,4 +1,4 @@
-import { Bootcamp } from '../schema/index.js';
+import { Bootcamp } from "../schema/index.js";
 
 /**
  * @desc: get all bootcamps
@@ -26,7 +26,7 @@ const getSingleBootcamp = async (id) => {
 
   //* check if bootcamp exists
   if (!bootcamp || bootcamp === null) {
-    throw new Error('Bootcamp not found');
+    throw new Error("Bootcamp not found");
   }
 
   return bootcamp;
@@ -51,10 +51,10 @@ const createBootcamp = async (body) => {
 const updateBootcampById = async (id, bootcampBody) => {
   const bootcamp = await getSingleBootcamp(id);
   if (!bootcamp || bootcamp === null) {
-    throw new Error('Bootcamp not found');
+    throw new Error("Bootcamp not found");
   }
   if (await Bootcamp.findByName(bootcampBody.name)) {
-    throw new Error('Bootcamp name is taken');
+    throw new Error("Bootcamp name is taken");
   }
   Object.assign(bootcamp, bootcampBody);
   await bootcamp.save();
@@ -69,7 +69,7 @@ const updateBootcampById = async (id, bootcampBody) => {
 const deleteBootcampById = async (id) => {
   const bootcamp = await getSingleBootcamp(id);
   if (!bootcamp || bootcamp === null) {
-    throw new Error('Bootcamp not found');
+    throw new Error("Bootcamp not found");
   }
   await bootcamp.remove();
   return bootcamp;
