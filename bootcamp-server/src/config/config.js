@@ -1,14 +1,14 @@
-import dotenv from "dotenv";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-import Joi from "joi";
+import dotenv from 'dotenv';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import Joi from 'joi';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /*
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: path.join(__dirname, "./config.env") });
+dotenv.config({ path: path.join(__dirname, './config.env') });
 
 /*
  * envVarsSchema is a Joi schema that validates the environment variables
@@ -17,10 +17,10 @@ dotenv.config({ path: path.join(__dirname, "./config.env") });
 const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string()
-      .valid("development", "production")
-      .default("development"),
+      .valid('development', 'production')
+      .default('development'),
     PORT: Joi.number().default(9000),
-    MongoDB_URL: Joi.string().description("MongoDB connection URL"),
+    MongoDB_URL: Joi.string().description('MongoDB connection URL'),
     origin: Joi.string(),
     credentials: Joi.boolean(),
     preflightContinue: Joi.boolean(),
@@ -42,7 +42,7 @@ const envVarsSchema = Joi.object()
 const { value: envVars, error } = envVarsSchema
   .prefs({
     errors: {
-      label: "key",
+      label: 'key',
     },
   })
   .validate(process.env);
@@ -73,9 +73,9 @@ const config = {
     cookie: {
       // expires on one day
       expires: new Date(Date.now() + 86400000),
-      secure: envVars !== "development",
-      httpOnly: envVars !== "development",
-      sameSite: envVars !== "development",
+      secure: envVars !== 'development',
+      httpOnly: envVars !== 'development',
+      sameSite: envVars !== 'development',
     },
   },
 };

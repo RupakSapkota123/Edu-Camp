@@ -18,7 +18,7 @@ import csurf from 'csurf';
 import appRoutes from './router/api.routes.js';
 import { error, rateLimiter } from './middlewares/index.js';
 import { ApiError } from './utils/index.js';
-import { config } from './config/index.js';
+import { config, passport as initPassport } from './config/index.js';
 import socket from './config/socket.js';
 
 const app = express();
@@ -52,7 +52,7 @@ socket(app, server);
 app.use(session(config.session));
 app.use(passport.initialize());
 app.use(passport.session());
-
+initPassport(passport);
 //! limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
   app.use('api/v1/auth', rateLimiter);
@@ -73,7 +73,7 @@ app.use(function (req, res, next) {
 
 //* error handler
 app.use(csurf());
-app.use(error);
+app.use(error.errorMiddleware);
 
 server.on('error', (err) => {
   if (err.syscall !== 'listen') {

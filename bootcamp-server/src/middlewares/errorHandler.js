@@ -135,4 +135,4 @@ const errorMiddleware = (err, req, res, next) => {
 };
 
 // eslint-disable-next-line no-restricted-exports
-export { errorMiddleware as default, ErrorHandler };
+export default { errorMiddleware, ErrorHandler };

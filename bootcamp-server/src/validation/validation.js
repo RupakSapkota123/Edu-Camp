@@ -45,12 +45,17 @@ const username = Joi.string()
       'Username must preceed with letters followed by _ or numbers eg: john23 | john_23',
   });
 
+const firstName = Joi.string();
+const lastName = Joi.string();
+
 export const schemas = {
   createUser: Joi.object()
     .keys({
       username,
       email,
       password,
+      firstName,
+      lastName,
     })
     .options({ abortEarly: false }),
 };

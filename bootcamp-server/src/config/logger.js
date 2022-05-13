@@ -1,6 +1,6 @@
-import winston from "winston";
-import morgan from "morgan";
-import config from "./config.js";
+import winston from 'winston';
+import morgan from 'morgan';
+import config from './config.js';
 
 const enumerateErrorFormat = winston.format((info) => {
   if (info instanceof Error) {
@@ -12,10 +12,10 @@ const enumerateErrorFormat = winston.format((info) => {
 });
 
 const logger = winston.createLogger({
-  level: config.env === "development" ? "debug" : "info",
+  level: config.env === 'development' ? 'debug' : 'info',
   format: winston.format.combine(
     enumerateErrorFormat(),
-    config.env === "development"
+    config.env === 'development'
       ? winston.format.colorize()
       : winston.format.uncolorize(),
     winston.format.splat(),
@@ -23,15 +23,15 @@ const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console({
-      stderrLevels: ["error"],
+      stderrLevels: ['error'],
     }),
   ],
 });
 
 //* Logs the request to console
 export const logRequest = (req, res, next) => {
-  if (config.env === "development") {
-    morgan("dev");
+  if (config.env === 'development') {
+    morgan('dev');
   }
   next();
 };

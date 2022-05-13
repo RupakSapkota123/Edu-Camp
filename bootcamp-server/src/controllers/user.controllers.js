@@ -1,7 +1,11 @@
+/* eslint-disable no-shadow */
 import httpStatus from 'http-status';
+import passport from 'passport';
 
 import { userServices } from '../services/index.js';
+import { error } from '../middlewares/index.js';
 import {
+  utils,
   ApiError,
   CatchAsync,
   pick,
@@ -53,10 +57,28 @@ const getUserByEmail = CatchAsync(async (req, res) => {
   }
 });
 
-const createUser = CatchAsync(async (req, res) => {
-  const user = await userServices.createUser(req.body);
-  res.status(httpStatus.CREATED).send(makeResponseJSON(user));
-});
+const createUser = (req, res, next) => {
+  passport.authenticate('local-register', (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (user) {
+      // if user has been successfully created
+      req.logIn(user, function (err) {
+        // <-- Log user in
+        if (err) {
+          return next(err);
+        }
+
+        const userData = utils.sessionizeUser(user);
+        return res.status(200).send(makeResponseJSON(userData));
+      });
+    } else {
+      next(new error.ErrorHandler(409, info.message));
+    }
+  })(req, res, next);
+};
 
 const updateUser = CatchAsync(async (req, res) => {
   const { userId } = req.params;

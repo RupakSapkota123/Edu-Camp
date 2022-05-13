@@ -67,10 +67,12 @@ const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
     maxlength: 20,
+    default: '',
   },
   lastName: {
     type: String,
     maxlength: 20,
+    default: '',
   },
 
   isEmailValidated: {
@@ -140,6 +142,7 @@ UserSchema.plugin(paginate);
  */
 UserSchema.virtual('fullName').get(function () {
   const { firstName, lastName } = this;
+  console.log('FullName', firstName, lastName);
   return firstName && lastName ? `${firstName} ${lastName}` : null;
 });
 
