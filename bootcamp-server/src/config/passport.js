@@ -58,4 +58,41 @@ export default function (passport) {
       },
     ),
   );
+
+  passport.use(
+    'local-login',
+    new LocalStrategy.Strategy(
+      {
+        usernameField: 'username',
+        passwordField: 'password',
+        passReqToCallback: true,
+      },
+      async (req, username, password, done) => {
+        try {
+          const user = await User.findOne({ username });
+
+          console.log('USER', password);
+
+          if (user) {
+            user.isPasswordMatch(password, function (err, match) {
+              if (err) {
+                return done(err);
+              }
+              console.log('MATCH=User', match);
+              if (match) {
+                return done(null, user);
+              }
+              return done(null, false, {
+                message: 'Incorrect credentials pass.',
+              });
+            });
+          } else {
+            return done(null, false, { message: 'Incorrect credentials.' });
+          }
+        } catch (err) {
+          return done(err);
+        }
+      },
+    ),
+  );
 }

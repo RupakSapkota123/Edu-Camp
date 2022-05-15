@@ -1,10 +1,5 @@
 import Joi from 'joi';
 
-import { error } from '../middlewares/index.js';
-
-const usernameRegex = /^[a-zA-Z0-9]{3,30}$/;
-const user = new RegExp(usernameRegex, 'gi');
-
 const email = Joi.string()
   .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
   .required()
@@ -58,20 +53,10 @@ export const schemas = {
       lastName,
     })
     .options({ abortEarly: false }),
+  loginUser: Joi.object().keys({
+    username,
+    password,
+  }),
 };
 
-// destructure the assignment target
-
-export const validateBody = (schema, req, res, next) => {
-  const { body } = req;
-  const result = schema.validate(body);
-  if (result.error) {
-    console.log(result.error);
-    return next(error(400, result.error.details[0].message));
-  }
-  if (!req.value) {
-    req.value = {};
-  }
-  req.value.body = result.value;
-  next();
-};
+export default schemas;

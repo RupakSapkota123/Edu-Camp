@@ -44,6 +44,7 @@
     "http-status": "^1.5.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash.omit": "^4.5.0",
     "moment": "^2.29.3",
     "mongoose": "^6.3.2",
     "morgan": "^1.10.0",

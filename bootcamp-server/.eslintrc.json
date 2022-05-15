@@ -24,6 +24,7 @@
         "no-underscore-dangle": "off",
         "consistent-return": "off",
         "security/detect-object-injection": "off",
-        "import/extensions": "off"
+        "import/extensions": "off",
+        "no-shadow": "off"
     }
 }
