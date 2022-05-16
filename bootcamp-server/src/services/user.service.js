@@ -43,18 +43,6 @@ const getUserByEmail = async (email) => {
 };
 
 /**
- * Create a user
- * @param {Object} userBody
- * @returns {Promise<User>}
- */
-const createUser = async (userBody) => {
-  if (await User.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.CONFLICT, 'Email is already taken');
-  }
-  return User.create(userBody);
-};
-
-/**
  * Update user by id
  * @param {ObjectId} userId
  * @param {Object} updateBody
@@ -88,7 +76,6 @@ export default {
   queryUsers,
   getUser,
   getUserByEmail,
-  createUser,
   updateUser,
   deleteUser,
 };

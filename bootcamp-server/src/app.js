@@ -1,5 +1,6 @@
 /* eslint-disable no-fallthrough */
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import bodyParser from 'body-parser';
@@ -28,7 +29,7 @@ app.use(helmet());
 
 //* enable cors
 app.use(cors(config.cors));
-// app.use('trust proxy', );
+app.set('trust proxy', 1);
 
 app.disable('x-powered-by');
 //* parse json request body
@@ -49,10 +50,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 socket(app, server);
 
 //* enable session
+app.use(cookieParser());
+initPassport(passport);
 app.use(session(config.session));
 app.use(passport.initialize());
 app.use(passport.session());
-initPassport(passport);
 //! limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
   app.use('api/v1/auth', rateLimiter);

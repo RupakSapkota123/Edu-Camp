@@ -2,8 +2,12 @@ import dotenv from 'dotenv';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import Joi from 'joi';
+import mongoose from 'mongoose';
+import MongoStore from 'connect-mongo';
+import session from 'express-session';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+// const MongoStore = ConnectMongo(session);
 
 /*
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -20,6 +24,7 @@ const envVarsSchema = Joi.object()
       .valid('development', 'production')
       .default('development'),
     PORT: Joi.number().default(9000),
+    CLIENT_URL: Joi.string(),
     MongoDB_URL: Joi.string().description('MongoDB connection URL'),
     origin: Joi.string(),
     credentials: Joi.boolean(),
@@ -34,6 +39,12 @@ const envVarsSchema = Joi.object()
         httpOnly: Joi.boolean(),
         secure: Joi.string(),
         sameSite: Joi.string(),
+      },
+      store: {
+        MongoDB_URL: Joi.string().description('MongoDB connection URL'),
+        ttl: Joi.number(),
+        autoRemove: Joi.string(),
+        autoRemoveInterval: Joi.number(),
       },
     },
   })
@@ -53,6 +64,7 @@ if (error) {
 const config = {
   env: envVars.NODE_ENV,
   PORT: envVars.PORT,
+  client: envVars.CLIENT_URL,
   mongoose: {
     url: envVars.MongoDB_URL,
     options: {
@@ -71,12 +83,20 @@ const config = {
     resave: false,
     saveUninitialized: true,
     cookie: {
-      // expires on one day
-      expires: new Date(Date.now() + 86400000),
-      secure: envVars !== 'development',
+      // expires in 3 minutes
+      expires: new Date(Date.now() + 60000),
+      secure: false,
+      sameSite: envVars === 'development' ? 'strict' : 'none',
       httpOnly: envVars !== 'development',
-      sameSite: envVars !== 'development',
+      maxAge: 60000,
     },
+    store: MongoStore.create({
+      mongoUrl: envVars.MongoDB_URL,
+      dbName: 'session',
+      ttl: envVars.SESSION_TTL,
+      autoRemove: 'interval',
+      autoRemoveInterval: 1000,
+    }),
   },
 };
 

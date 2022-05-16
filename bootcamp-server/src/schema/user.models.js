@@ -161,7 +161,6 @@ UserSchema.plugin(paginate);
  */
 UserSchema.virtual('fullName').get(function () {
   const { firstName, lastName } = this;
-  console.log('FullName', firstName, lastName);
   return firstName && lastName ? `${firstName} ${lastName}` : null;
 });
 

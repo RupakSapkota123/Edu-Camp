@@ -52,7 +52,42 @@ const login = (req, res, next) => {
   })(req, res, next);
 };
 
+const checkSession = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    const user = utils.sessionizeUser(req.user);
+    res
+      .status(200)
+      .send(makeResponseJSON({ auth: user, user: req.user.toUserJSON() }));
+  } else {
+    return next(new error.ErrorHandler(404, 'Session invalid/expired.'));
+  }
+};
+
+const logout = (req, res, next) => {
+  try {
+    req.logOut();
+    res.status(200).send(makeResponseJSON({}));
+  } catch (err) {
+    next(new error.ErrorHandler(422, 'Unable to logout. Please try again.'));
+  }
+};
+
+const facebookAuth = (req, res, next) => {
+  passport.authenticate('facebook', {
+    failureRedirect: `${process.env.CLIENT_URL}/auth/facebook/failed`,
+    successRedirect: `${process.env.CLIENT_URL}`,
+  });
+};
+
+const loginFailure = (req, res, next) => {
+  next(new error.ErrorHandler(404, 'Login failed.'));
+};
+
 export default {
   register,
   login,
+  checkSession,
+  logout,
+  facebookAuth,
+  loginFailure,
 };

@@ -1,3 +1,4 @@
+// import { error } from './index.js';
 import { error } from './index.js';
 
 const validate = (schema) => (req, res, next) => {
