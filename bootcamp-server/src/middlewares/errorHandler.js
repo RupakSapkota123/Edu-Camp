@@ -33,9 +33,9 @@ const errorMiddleware = (err, req, res, next) => {
   const { statusCode = 500, message = 'Internal server error' } = err;
 
   //* Mongo error
-  if (err.name === 'MongoError' && err.code === 11000) {
+  console.log('error.name', err.name);
+  if (err.name === 'MongoServerError' && err.code === 11000) {
     const field = Object.keys(err.keyValue);
-
     return res.status(httpStatus.CONFLICT).json(
       errResponseToJSON({
         statusCode: httpStatus.CONFLICT,

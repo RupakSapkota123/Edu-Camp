@@ -13,6 +13,12 @@ import paginate from './plugins/paginate.js';
 
 const bcryptjs = bcrypt.genSaltSync(10);
 
+const EGender = {
+  male: 'male',
+  female: 'female',
+  unspecified: 'unspecified',
+};
+
 const UserSchema = new mongoose.Schema(
   {
     username: {
@@ -231,8 +237,13 @@ UserSchema.methods.isBookmarked = async function (bootcampId) {
 };
 
 UserSchema.pre('save', async function (next) {
-  const user = this;
   try {
+    if (this.info.gender === null) this.info.gender = EGender.unspecified;
+    if (this.firstName === null) this.firstName = '';
+    if (this.lastName === null) this.lastName = '';
+    if (this.profilePicture === null) this.profilePicture = '';
+    if (this.coverPhoto === null) this.coverPhoto = '';
+    if (this.info.birthday === null) this.info.birthday = '';
     if (!this.isModified('password')) return next();
 
     const hash = await bcrypt.hash(this.password, bcryptjs);

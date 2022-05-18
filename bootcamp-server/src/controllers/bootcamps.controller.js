@@ -1,7 +1,7 @@
-import httpStatus from "http-status";
+import httpStatus from 'http-status';
 
-import { bootcampsServices } from "../services/index.js";
-import { ApiError, CatchAsync } from "../utils/index.js";
+import { bootcampsServices } from '../services/index.js';
+import { ApiError, CatchAsync, makeResponseJSON } from '../utils/index.js';
 
 /*
  * @desc: get all bootcamps
@@ -64,18 +64,10 @@ const getSingleBootcamp = CatchAsync(async (req, res) => {
  * @catch: ApiError
  */
 const createBootcamp = CatchAsync(async (req, res) => {
-  try {
-    const bootcamps = await bootcampsServices.createBootcamp(req.body);
-    res.status(httpStatus.CREATED, "Bootcamp created successfully").json({
-      bootcamps,
-      success: true,
-    });
-  } catch (err) {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: err.message,
-    });
-  }
+  console.log('body', req.user);
+  const bootcamps = await bootcampsServices.createBootcamp(req.body, req.user);
+  console.log('bootcamps', bootcamps);
+  res.status(httpStatus.CREATED).json(makeResponseJSON(bootcamps));
 });
 
 /*

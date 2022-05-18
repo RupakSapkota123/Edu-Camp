@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow */
 import express from 'express';
 import passport from 'passport';
-import { ensureLoggedIn } from 'connect-ensure-login';
 
 import httpStatus from 'http-status';
 import { userControllers } from '../controllers/index.js';

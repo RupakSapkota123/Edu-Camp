@@ -88,7 +88,7 @@ const config = {
       secure: false,
       sameSite: envVars === 'development' ? 'strict' : 'none',
       httpOnly: envVars !== 'development',
-      maxAge: 60000,
+      maxAge: 600000,
     },
     store: MongoStore.create({
       mongoUrl: envVars.MongoDB_URL,

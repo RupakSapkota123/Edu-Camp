@@ -1,11 +1,8 @@
 import { error } from './index.js';
 
 function isAuthenticated(req, res, next) {
-  console.log('middleware.js: isAuthenticated', req.isAuthenticated());
-  if (req.isAuthenticated || req.isAuthenticated()) {
-    if (req.session) {
-      req.session.returnTo = req.originalUrl || req.url;
-    }
+  if (req.isAuthenticated()) {
+    console.log('CHECK MIDDLEWARE: IS AUTH: ', req.isAuthenticated());
     return next();
   }
 

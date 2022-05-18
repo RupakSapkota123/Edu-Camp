@@ -1,7 +1,7 @@
 import express from 'express';
 import { bootcampsControllers } from '../controllers/index.js';
-import { bootcampValidation } from '../validation/index.js';
-import { validate } from '../middlewares/index.js';
+import { schemas } from '../validation/index.js';
+import { middleware, validate } from '../middlewares/index.js';
 
 const router = express.Router();
 
@@ -9,36 +9,33 @@ const router = express.Router();
  * @bootcampsRoutes - /api/bootcamps
  * @description - This is the main route for the bootcamps api.
  * @access - public
- * @bootcampValidation - Joi validation
+ * @schemas - Joi validation
  * @bootcampsControllers - bootcampsControllers
  */
 
 // eslint-disable-next-line prettier/prettier
 router
   .route('/')
-  .get(
-    validate(bootcampValidation.getAllBootcamps),
-    bootcampsControllers.getAllBootcamps,
-  )
+  .get(validate(schemas.getAllBootcamps), bootcampsControllers.getAllBootcamps)
   .post(
-    validate(bootcampValidation.createBootcamp),
+    middleware,
+    validate(schemas.createBootcamp),
     bootcampsControllers.createBootcamp,
   );
 
 // eslint-disable-next-line prettier/prettier
 router
   .route('/:id')
-  .get(
-    validate(bootcampValidation.getSingleBootcamp),
-    bootcampsControllers.getSingleBootcamp,
-  )
+  .get(bootcampsControllers.getSingleBootcamp)
   // .post(bootcampsControllers.createBootcampById)
   .put(
-    validate(bootcampValidation.updateBootcampById),
+    middleware,
+    validate(schemas.updateBootcampById),
     bootcampsControllers.updateBootcampById,
   )
   .delete(
-    validate(bootcampValidation.deleteBootcampById),
+    middleware,
+    validate(schemas.deleteBootcampById),
     bootcampsControllers.DeleteBootcampById,
   );
 
