@@ -2,7 +2,7 @@
 import moment from 'moment';
 import mongoose from 'mongoose';
 import Bookmark from '../schema/bookmark.models.js';
-import { Bootcamp } from '../schema/index.js';
+import { Bootcamp, Follow, Newsfeed } from '../schema/index.js';
 import Like from '../schema/like.models.js';
 import { utils } from '../utils/index.js';
 
@@ -27,28 +27,69 @@ const getAllBootcamps = async (body) => {
  * @param {Object} body
  * @returns {Promise<Bootcamp>}
  */
-const createBootcamp = async (body, user) => {
-  console.log('body', user);
-  const { description, privacy, address, name, careers } = body;
-  console.log('profile', user.author);
-  const bootcamp = new Bootcamp({
-    _author_id: user._id,
-    author: user.fullName,
-    name,
-    description: utils.filterWords.clean(description),
-    privacy: privacy || 'public',
-    careers,
-    address: address || '',
-    createdAt: Date.now(),
+const createBootcamp = (body, app, user) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log('body', user);
+      const { description, privacy, address, name, careers } = body;
+      console.log('profile', user.author);
+      const bootcamp = new Bootcamp({
+        _author_id: user._id,
+        author: user.fullName,
+        name,
+        description: utils.filterWords.clean(description),
+        privacy: privacy || 'public',
+        careers,
+        address: address || '',
+        //    createdAt: moment().format('MMMM Do YYYY, h:mm:ss a').toString(),
+        createdAt: Date.now(),
+      });
+      await bootcamp.save();
+      await bootcamp.populate([
+        {
+          path: 'author',
+          select: 'profilePicture username fullName email',
+        },
+      ]);
+
+      const myFollowersDoc = await Follow.find({ target: body.user?._id });
+      const myFollowers = myFollowersDoc.map((follow) => follow.user);
+
+      //* add post to the feed of all followers
+      const newsFeeds = myFollowers
+        .map((follower) => ({
+          follower: mongoose.Types.ObjectId(follower._id),
+          post: mongoose.Types.ObjectId(bootcamp._id),
+          post_author: mongoose.Types.ObjectId(user._id),
+          createdAt: bootcamp.createdAt,
+        }))
+        //* append own to the news feed
+        .concat({
+          follower: body.user?._id,
+          post_author: body.user?._id,
+          post: mongoose.Types.ObjectId(bootcamp._id),
+          createdAt: bootcamp.createdAt,
+        });
+
+      if (bootcamp.length !== 0) {
+        await Newsfeed.insertMany(newsFeeds);
+      }
+
+      if (bootcamp.privacy !== 'private') {
+        const io = app.get('io');
+        myFollowers.forEach((id) => {
+          io.to(id.toString()).emit('newFeed', {
+            ...Bootcamp.toObject(),
+            isOwnPost: false,
+          });
+        });
+      }
+      resolve(bootcamp);
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    }
   });
-  await bootcamp.save();
-  await bootcamp.populate([
-    {
-      path: 'author',
-      select: 'profilePicture username fullName email',
-    },
-  ]);
-  return bootcamp;
 };
 
 /**
@@ -312,6 +353,7 @@ export default {
   getAllBootcamps,
   getSingleBootcamp,
   createBootcamp,
+  getBootcamps,
   likePost,
   updateBootcampById,
   deleteBootcampById,

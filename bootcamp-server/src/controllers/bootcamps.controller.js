@@ -67,7 +67,11 @@ const getSingleBootcamp = CatchAsync(async (req, res) => {
  */
 const createBootcamp = CatchAsync(async (req, res) => {
   console.log('body', req.user);
-  const bootcamps = await bootcampsServices.createBootcamp(req.body, req.user);
+  const bootcamps = await bootcampsServices.createBootcamp(
+    req.body,
+    req.app,
+    req.user,
+  );
   console.log('bootcamps', bootcamps);
   res
     .status(httpStatus.CREATED)

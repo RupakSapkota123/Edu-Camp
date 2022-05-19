@@ -4,6 +4,7 @@ import { error } from './index.js';
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     console.log('CHECK MIDDLEWARE: IS AUTH: ', req.isAuthenticated());
+    console.log('currentUser', req.user);
     return next();
   }
 
