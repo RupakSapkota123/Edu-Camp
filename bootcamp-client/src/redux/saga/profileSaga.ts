@@ -11,14 +11,6 @@ interface IProfileSaga {
   payload: any;
 }
 
-fetchUser("627bfe723f0ca49141d66b66")
-  .then((data: any) => {
-    console.log("data=====", data);
-  })
-  .catch((e: any) => {
-    console.log("error=====", e);
-  });
-
 function* profileSaga({ type, payload }: IProfileSaga) {
   switch (type) {
     case GET_USER_START:

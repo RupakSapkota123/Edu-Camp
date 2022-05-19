@@ -53,6 +53,9 @@ export interface IRegister {
 
 export interface IPost {
   id: string;
+  name: string;
+  description: string;
+  careers: string[];
   photos: Record<string, any>;
   comments: any[];
   author: IUser;

@@ -4,10 +4,10 @@ import axios, { AxiosRequestConfig } from "axios";
 import { logoutStart } from "redux/actions/authActions";
 import store from "redux/store/store";
 
-const foodieUrl = "http://localhost:9000";
-const foodieApiVersion = "v1";
-axios.defaults.baseURL = `${foodieUrl}/api/${foodieApiVersion}`;
-axios.defaults.withCredentials = false;
+const eduURL = "http://localhost:9000";
+const wduApiVersion = "v1";
+axios.defaults.baseURL = `${eduURL}/api/${wduApiVersion}`;
+axios.defaults.withCredentials = true;
 
 let isLogoutTriggered = false;
 
@@ -39,7 +39,8 @@ const httpRequest = <T>(req: AxiosRequestConfig): Promise<T> => {
   return new Promise(async (resolve, reject) => {
     try {
       const request = await axios(req);
-      resolve(request.data);
+      console.log("request=====", req);
+      resolve(request.data.data);
     } catch (e: any) {
       reject(e?.response?.data || {});
     }

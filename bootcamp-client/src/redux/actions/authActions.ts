@@ -11,21 +11,19 @@ import {
 } from "constants/actionType";
 import { IRegister, IUser } from "types/types";
 
-export const loginStart = (email: string, password: string) =>
+export const loginStart = (username: string, password: string) =>
   <const>{
     type: LOGIN_START,
     payload: {
-      email,
+      username,
       password,
     },
   };
 
-export const loginSuccess = (user: IUser) =>
+export const loginSuccess = (auth: IUser) =>
   <const>{
     type: LOGIN_SUCCESS,
-    payload: {
-      user,
-    },
+    payload: auth,
   };
 
 export const logoutStart = (callback?: () => void) =>
