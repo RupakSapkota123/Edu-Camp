@@ -34,8 +34,10 @@ const getAllBootcamps = CatchAsync(async (req, res) => {
  */
 const getSingleBootcamp = CatchAsync(async (req, res) => {
   try {
-    const { id } = await req.params;
-    const bootcamps = await bootcampsServices.getSingleBootcamp(id);
+    const bootcamps = await bootcampsServices.getSingleBootcamp(
+      req.user,
+      req.params,
+    );
     res.status(200).json({
       bootcamps,
       success: true,
@@ -67,7 +69,9 @@ const createBootcamp = CatchAsync(async (req, res) => {
   console.log('body', req.user);
   const bootcamps = await bootcampsServices.createBootcamp(req.body, req.user);
   console.log('bootcamps', bootcamps);
-  res.status(httpStatus.CREATED).json(makeResponseJSON(bootcamps));
+  res
+    .status(httpStatus.CREATED)
+    .send(makeResponseJSON({ ...bootcamps.toObject(), isOwner: true }));
 });
 
 /*
@@ -91,6 +95,22 @@ const updateBootcampById = CatchAsync(async (req, res) => {
       message: err.message,
     });
   }
+});
+
+const likePost = CatchAsync(async (req, res) => {
+  const { state, likesCount } = await bootcampsServices.likePost(
+    req.user,
+    req.app,
+    req.params,
+  );
+
+  console.log('state app params', req.user, req.app, req.params);
+  res.status(200).send(
+    makeResponseJSON({
+      state,
+      likesCount,
+    }),
+  );
 });
 
 /*
@@ -118,6 +138,7 @@ const DeleteBootcampById = CatchAsync(async (req, res) => {
 
 export default {
   getAllBootcamps,
+  likePost,
   getSingleBootcamp,
   createBootcamp,
   updateBootcampById,

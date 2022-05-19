@@ -7,7 +7,7 @@ const initState = {
   timeStamp: null,
 };
 
-const makeResponseJSON = (data, success) => {
+const makeResponseJSON = (data, success = true) => {
   return {
     ...initState,
     data,

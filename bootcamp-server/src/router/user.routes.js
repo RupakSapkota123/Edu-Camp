@@ -10,11 +10,11 @@ import { schemas } from '../validation/validation.js';
 
 const router = express.Router({ mergeParams: true });
 
-router.route('/').get(middleware, userControllers.getUsers);
+router.route('/').get(middleware.isAuthenticated, userControllers.getUsers);
 
 router
   .route('/:userId')
-  .get(middleware, userControllers.getUser)
+  .get(middleware.isAuthenticated, userControllers.getUser)
   .put(userControllers.updateUser)
   .delete(userControllers.deleteUser);
 

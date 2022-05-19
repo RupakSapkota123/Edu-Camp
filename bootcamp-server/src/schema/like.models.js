@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import User from './user.models';
-import Bootcamp from './Bootcamp.models';
 
 const likeSchema = new mongoose.Schema(
   {

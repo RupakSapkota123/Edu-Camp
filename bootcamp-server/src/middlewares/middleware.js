@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { error } from './index.js';
 
 function isAuthenticated(req, res, next) {
@@ -9,4 +10,20 @@ function isAuthenticated(req, res, next) {
   return next(new error.ErrorHandler(401));
 }
 
-export default isAuthenticated;
+function validateObjectID(...ObjectIDs) {
+  return function (req, res, next) {
+    ObjectIDs.forEach((id) => {
+      if (!mongoose.isValidObjectId(req.params[id])) {
+        return next(
+          new error.ErrorHandler(400, `ObjectID ${id} supplied is not valid`),
+        );
+      }
+      next();
+    });
+  };
+}
+
+export default {
+  isAuthenticated,
+  validateObjectID,
+};
