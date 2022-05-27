@@ -2,7 +2,7 @@
 import { Server } from 'socket.io';
 
 import { config } from './index.js';
-import { User } from '../schema/index.js';
+import { User } from '../models/index.js';
 
 export default function (app, server) {
   const io = new Server(server, {

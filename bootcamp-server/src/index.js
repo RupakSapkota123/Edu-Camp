@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import colors from 'colors';
 
-import { server as serve } from './app.js';
+import Express from './app.js';
 import { config, logger } from './config/index.js';
 
+const express = new Express();
 /*
  * Connect to the database
  * @server {Object}
@@ -11,13 +12,8 @@ import { config, logger } from './config/index.js';
 let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB'.cyan.underline.bold);
-  server = serve.listen(config.PORT, () => {
-    logger.info(
-      `Listening on ${config.env} mode from port ${config.PORT}`.yellow.bold,
-    );
-  });
+  server = express.listen();
 });
-
 /*
  * @exitHandler {Function} - will be called on process exit
  * @unexpectedErrorHandler {Function} - will be called on unexpected error
@@ -48,3 +44,6 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
+
+express.onError();
+express.onListening();

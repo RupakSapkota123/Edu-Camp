@@ -1,7 +1,7 @@
 import LocalStrategy from 'passport-local';
 import FacebookStrategy from 'passport-facebook';
 
-import { User } from '../schema/index.js';
+import { User } from '../models/index.js';
 
 // eslint-disable-next-line no-shadow
 export default function (passport) {
@@ -29,6 +29,7 @@ export default function (passport) {
         passReqToCallback: true,
       },
       function (req, email, password, done) {
+        console.log('called');
         User.findOne({ email }).then((user) => {
           if (user) {
             return done(null, false, {
@@ -72,7 +73,7 @@ export default function (passport) {
           const user = await User.findOne({ username });
 
           if (user) {
-            user.isPasswordMatch(password, function (err, match) {
+            user.passwordMatch(password, function (err, match) {
               if (err) {
                 return done(err);
               }

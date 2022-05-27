@@ -25,6 +25,7 @@
         "consistent-return": "off",
         "security/detect-object-injection": "off",
         "import/extensions": "off",
-        "no-shadow": "off"
+        "no-shadow": "off",
+        "import/prefer-default-export": "off"
     }
 }

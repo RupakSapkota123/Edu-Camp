@@ -4,7 +4,6 @@ import { error } from './index.js';
 const validate = (schema) => (req, res, next) => {
   const result = schema.validate(req.body);
   if (result.error) {
-    console.log(result.error);
     return next(new error.ErrorHandler(400, result.error.details[0].message));
   }
   if (!req.value) {

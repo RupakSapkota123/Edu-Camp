@@ -26,6 +26,7 @@ const envVarsSchema = Joi.object()
     PORT: Joi.number().default(9000),
     CLIENT_URL: Joi.string(),
     MongoDB_URL: Joi.string().description('MongoDB connection URL'),
+    MONGODB_URL1: Joi.string(),
     origin: Joi.string(),
     credentials: Joi.boolean(),
     preflightContinue: Joi.boolean(),
@@ -47,6 +48,15 @@ const envVarsSchema = Joi.object()
         autoRemoveInterval: Joi.number(),
       },
     },
+    cloudinary: {
+      CLOUD_NAME: Joi.string(),
+      CL_SECRECT: Joi.string(),
+      CL_API: Joi.string(),
+    },
+    geocoder: {
+      GEOCODER_PROVIDER: Joi.string(),
+      GEOCODER_API_KEY: Joi.string(),
+    },
   })
   .unknown();
 
@@ -65,8 +75,10 @@ const config = {
   env: envVars.NODE_ENV,
   PORT: envVars.PORT,
   client: envVars.CLIENT_URL,
+  mongo: envVars.MONGODB_URL1,
   mongoose: {
     url: envVars.MongoDB_URL,
+    url1: envVars.MONGODB_URL1,
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -97,6 +109,15 @@ const config = {
       autoRemove: 'interval',
       autoRemoveInterval: 1000,
     }),
+  },
+  cloudinary: {
+    cloud_name: envVars.cloud_name,
+    api_key: envVars.api_key,
+    api_secret: envVars.api_secret,
+  },
+  geocoder: {
+    GEOCODER_PROVIDER: envVars.GEOCODER_PROVIDER,
+    GEOCODER_API_KEY: envVars.GEOCODER_API_KEY,
   },
 };
 

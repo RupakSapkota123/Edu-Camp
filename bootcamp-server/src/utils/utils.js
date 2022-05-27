@@ -3,6 +3,7 @@ import Filter from 'bad-words';
 const sessionizeUser = (user) => ({
   id: user.id,
   fullName: user.fullName,
+  username: user.username,
   profilePicture: user.profilePicture,
 });
 

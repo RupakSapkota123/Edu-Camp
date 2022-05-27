@@ -12,12 +12,7 @@ const email = Joi.string()
   });
 
 // eslint-disable-next-line prettier/prettier
-  const password = Joi
-  .string()
-     .required()
-     .min(8)
-     .max(12)
-     .messages({
+const password = Joi.string().required().min(8).max(12).messages({
   'string.base': 'Password should be a type of text',
   'string.empty': 'Password cannot be empty field',
   'string.min': 'Password should be at least {#limit} characters long',

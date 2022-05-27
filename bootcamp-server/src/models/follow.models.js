@@ -3,12 +3,12 @@ import mongoose from 'mongoose';
 const FollowSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
     target: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       default: [],
     },
@@ -16,7 +16,7 @@ const FollowSchema = new mongoose.Schema(
   {
     timestamps: true,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true, getters: true },
+    toObject: { getters: true, virtuals: true },
   },
 );
 

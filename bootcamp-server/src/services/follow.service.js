@@ -1,16 +1,17 @@
-/* eslint-disable import/prefer-default-export */
-import { Follow } from '../schema/index.js';
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable default-param-last */
+import { Follow } from '../models/index.js';
 
-export const getFollow = (query, type, user, skip, limit) => {
-  // eslint-disable-next-line no-async-promise-executor
+const getFollow = (query, type = 'followers', user, skip, limit) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const myFollowDoc = await Follow.find({ user: user?._id });
-      console.log('myFollowDoc', myFollowDoc);
-      const myFollowing = myFollowDoc.map((follow) => follow.target);
+      const myFollowingDoc = await Follow.find({ user: user._id });
+      const myFollowing = myFollowingDoc.map((user) => user.target); // map to array of user IDs
 
       const agg = await Follow.aggregate([
-        { $match: query },
+        {
+          $match: query,
+        },
         { $skip: skip },
         { $limit: limit },
         {
@@ -34,16 +35,18 @@ export const getFollow = (query, type, user, skip, limit) => {
             _id: 0,
             id: '$user._id',
             username: '$user.username',
+            email: '$user.email',
             profilePicture: '$user.profilePicture',
             isFollowing: 1,
-            email: '$user.email',
           },
         },
       ]);
 
       resolve(agg);
-    } catch (error) {
-      reject(error);
+    } catch (err) {
+      reject(err);
     }
   });
 };
+
+export default { getFollow };

@@ -1,19 +1,13 @@
 import express from 'express';
+import BootcampRoutes from './v1/bootcamp.routes.js';
+import FollowRoutes from './v1/follow.routes.js';
+import authRoutes from './v1/auth.routes.js';
 
-import bootcampRoutes from './bootcamps.routes.js';
-import userRoutes from './user.routes.js';
-import authRoutes from './auth.routes.js';
-import feedRoutes from './newsfeed.routes.js';
-import followRoutes from './follow.routes.js';
+const app = express();
 
-const router = express.Router({ mergeParams: true });
+app.use('/v1/auth', authRoutes);
 
-router.use('/auth', authRoutes);
+app.use('/v1', BootcampRoutes);
+app.use('/v1', FollowRoutes);
 
-router.use('/bootcamps', bootcampRoutes);
-router.use('/user', userRoutes);
-router.use('/feed', feedRoutes);
-
-router.use('/', followRoutes);
-
-export default router;
+export default app;
