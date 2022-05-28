@@ -23,6 +23,8 @@ router
   .route('/:username/bootcamps')
   .get(middleware.isAuthenticated, BootcampControllers.getBootcampByUsername);
 
+router.route('/bootcamp').get(BootcampControllers.getCamps);
+
 router
   .route('/bootcamps/radius/:zipcode/:distance')
   .get(BootcampControllers.getBootcampsInRadius);

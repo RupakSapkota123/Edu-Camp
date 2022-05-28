@@ -12,6 +12,36 @@ import { error } from '../middlewares/index.js';
 import { BootcampService } from '../services/index.js';
 import { POST_LIMIT } from '../constants/constants.js';
 
+const getCamps = async (req, res, next) => {
+  try {
+    const { sortBy, sortOrder } = req.query;
+    const offset = parseInt(req.query.offset, 10) || 0;
+    const limit = POST_LIMIT;
+    const skip = offset * limit;
+    const query = {};
+    const sortQuery = {
+      [sortBy || 'createdAt']: sortOrder === 'asc' ? 1 : -1,
+    };
+
+    const agg = await BootcampService.getPosts(req.user, query, {
+      skip,
+      limit,
+      sort: sortQuery,
+    });
+
+    if (agg.length === 0 && offset === 0) {
+      return next(new error.ErrorHandler(404, 'No bootcamps found.'));
+    } else if (agg.length <= 0 && offset >= 1) {
+      return next(new error.ErrorHandler(404, 'No more bootcamps found.'));
+    }
+
+    res.status(200).send(makeResponseJSON(agg));
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 const createBootcamp = async (req, res, next) => {
   try {
     const {
@@ -234,4 +264,5 @@ export default {
   updateBootcamp,
   deleteBootcamp,
   getBootcampsInRadius,
+  getCamps,
 };

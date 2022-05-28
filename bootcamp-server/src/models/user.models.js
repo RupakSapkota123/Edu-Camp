@@ -162,7 +162,7 @@ UserSchema.methods.toProfileJSON = function () {
   return {
     id: this._id,
     username: this.username,
-    fullname: this.fullname,
+    fullName: this.fullName,
     profilePicture: this.profilePicture,
   };
 };
@@ -178,8 +178,8 @@ UserSchema.methods.isBookmarked = function (postID) {
 
 UserSchema.pre('save', function (next) {
   if (this.info.gender === null) this.info.gender = 'unspecified';
-  if (this.firstname === null) this.firstName = '';
-  if (this.lastname === null) this.lastName = '';
+  if (this.firstName === null) this.firstName = '';
+  if (this.lastName === null) this.lastName = '';
   if (this.profilePicture === null) this.profilePicture = '';
   if (this.coverPhoto === null) this.coverPhoto = '';
   if (this.info.birthday === null) this.info.birthday = '';
