@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
+import { error } from '../middlewares/index.js';
 import { geocoder } from '../utils/index.js';
 
 const BootcampSchema = new mongoose.Schema(
@@ -153,6 +154,13 @@ BootcampSchema.pre('save', async function (next) {
   // Do not save address in DB
   this.address = undefined;
   next();
+});
+
+//* check if bootcamp name is taken or not
+BootcampSchema.pre('save', async function (next) {
+  const isNameTaken = await this.constructor.findOne({ name: this.name });
+  if (isNameTaken)
+    return next(new error.ErrorHandler(422, 'Name is already taken'));
 });
 
 const Bootcamp = mongoose.model('Bootcamp', BootcampSchema);
