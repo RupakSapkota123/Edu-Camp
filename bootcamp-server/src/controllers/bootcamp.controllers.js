@@ -7,7 +7,7 @@ import {
   deleteImageFromStorage,
   uploadImageToStorage,
 } from '../storage/cloudinary.js';
-import { utils, makeResponseJSON } from '../utils/index.js';
+import { utils, makeResponseJSON, geocoder } from '../utils/index.js';
 import { error } from '../middlewares/index.js';
 import { BootcampService } from '../services/index.js';
 import { POST_LIMIT } from '../constants/constants.js';
@@ -44,7 +44,7 @@ const createBootcamp = async (req, res, next) => {
       careers,
       email,
       averageCost,
-      createdAt: moment().format('YYYY-MM-DD HH:mm:ss a').toString(),
+      createdAt: Date.now(),
       ...rest,
     });
 
@@ -201,9 +201,37 @@ const deleteBootcamp = async (req, res, next) => {
   }
 };
 
+const getBootcampsInRadius = async (req, res, next) => {
+  try {
+    const { zipcode, distance } = req.params;
+
+    // Get lat/lng from geocoder
+    const loc = await geocoder.geocode(zipcode);
+    const lat = loc[0].latitude;
+    const lng = loc[0].longitude;
+
+    // Calc radius using radians
+    // Divide dist by radius of earth
+    // Earth Radius = 3,963 mi / 6,378 km
+    const radius = distance / 3963;
+
+    const bootcamp = await Bootcamp.find({
+      location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+    });
+
+    res
+      .status(200)
+      .send(makeResponseJSON({ bootcamp, count: bootcamp.length }));
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export default {
   createBootcamp,
   getBootcampByUsername,
   updateBootcamp,
   deleteBootcamp,
+  getBootcampsInRadius,
 };
