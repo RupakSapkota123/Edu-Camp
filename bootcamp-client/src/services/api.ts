@@ -35,27 +35,5 @@ export const logout = () =>
     url: "/user/logout",
   });
 
-export const likePost = (postId: string) => {
-  return httpRequest<{ state: string; likesCount: number }>({
-    method: "POST",
-    url: `/post/like/${postId}`,
-  });
-};
-
-export const getPostLikes = (postID: string, params: IFetchParams) => {
-  return httpRequest<IProfile[]>({
-    method: "GET",
-    url: `/post/likes/${postID}`,
-    params,
-  });
-};
-
-export const getSinglePost = (postID: string) =>
-  httpRequest<IPost>({ method: "GET", url: `/post/${postID}` });
-
-export const getNewsFeed = (params?: IFetchParams) =>
-  httpRequest<any>({
-    method: "GET",
-    url: "/feed",
-    params,
-  });
+export const checkAuthSession = () =>
+  httpRequest<{ auth: IUser }>({ method: "GET", url: "/check-session" });

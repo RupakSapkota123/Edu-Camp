@@ -9,7 +9,7 @@ import {
 } from "constants/actionType";
 import authSaga from "./authSaga";
 import profileSaga from "./profileSaga";
-import newsFeedSaga from "./feedSaga";
+// import newsFeedSaga from "./feedSaga";
 
 function* rootSaga() {
   yield takeLatest(
@@ -18,7 +18,7 @@ function* rootSaga() {
   );
   yield takeLatest([GET_USER_START], profileSaga);
 
-  yield takeLatest([GET_FEED_START], newsFeedSaga);
+  // yield takeLatest([GET_FEED_START], newsFeedSaga);
 }
 
 export default rootSaga;

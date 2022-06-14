@@ -1,39 +1,42 @@
-import { call, put } from "redux-saga/effects";
-import { CREATE_POST_START, GET_FEED_START } from "constants/actionType";
-import { getNewsFeed } from "services/api";
-import { IPost } from "types/types";
-import { setNewsFeedErrorMessage } from "../actions/errorActions";
-import { getNewsFeedSuccess } from "../actions/feedActions";
-import { isCreatingPost, isGettingFeed } from "../actions/loadingActions";
+const ssss = () => {};
 
-interface INewsFeedSaga {
-  type: string;
-  payload: any;
-}
+export default ssss;
+// import { call, put } from "redux-saga/effects";
+// import { CREATE_POST_START, GET_FEED_START } from "constants/actionType";
+// import { getNewsFeed } from "services/api";
+// import { IPost } from "types/types";
+// import { setNewsFeedErrorMessage } from "../actions/errorActions";
+// import { getNewsFeedSuccess } from "../actions/feedActions";
+// import { isCreatingPost, isGettingFeed } from "../actions/loadingActions";
 
-function* newsFeedSaga({ type, payload }: INewsFeedSaga) {
-  switch (type) {
-    case GET_FEED_START:
-      try {
-        console.log("hy");
+// interface INewsFeedSaga {
+//   type: string;
+//   payload: any;
+// }
 
-        yield put(isGettingFeed(true));
-        yield put(setNewsFeedErrorMessage(null));
-        console.log("payload=====");
-        const posts: IPost[] = yield call(getNewsFeed, payload);
-        console.log("posts=====", posts);
-        yield put(isGettingFeed(false));
-        yield put(getNewsFeedSuccess(posts));
-      } catch (e: any) {
-        console.log(e);
-        yield put(isGettingFeed(false));
-        yield put(setNewsFeedErrorMessage(e));
-      }
+// function* newsFeedSaga({ type, payload }: INewsFeedSaga) {
+//   switch (type) {
+//     case GET_FEED_START:
+//       try {
+//         console.log("hy");
 
-      break;
-    default:
-      throw new Error("Unexpected action type.");
-  }
-}
+//         yield put(isGettingFeed(true));
+//         yield put(setNewsFeedErrorMessage(null));
+//         console.log("payload=====");
+//         const posts: IPost[] = yield call(getNewsFeed, payload);
+//         console.log("posts=====", posts);
+//         yield put(isGettingFeed(false));
+//         yield put(getNewsFeedSuccess(posts));
+//       } catch (e: any) {
+//         console.log(e);
+//         yield put(isGettingFeed(false));
+//         yield put(setNewsFeedErrorMessage(e));
+//       }
 
-export default newsFeedSaga;
+//       break;
+//     default:
+//       throw new Error("Unexpected action type.");
+//   }
+// }
+
+// export default newsFeedSaga;

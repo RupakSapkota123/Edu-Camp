@@ -50,14 +50,14 @@ function* authSaga({ type, payload }: IAuthSaga) {
       try {
         yield put(isAuthenticating(true));
         console.log("payload=====", payload);
-        const { data } = yield call(login, payload.username, payload.password);
+        const { auth } = yield call(login, payload.username, payload.password);
         yield put(isAuthenticating(false));
-        socket.emit("userConnect", data.auth.id);
-        yield put(loginSuccess(data.auth));
+        socket.emit("userConnect", auth.id);
+        yield put(loginSuccess(auth));
         history.push("/welcome");
       } catch (e: any) {
         console.log("e=====", e);
-        yield handleError(e.error.message);
+        yield handleError(e);
       }
       break;
     case CHECK_SESSION:
