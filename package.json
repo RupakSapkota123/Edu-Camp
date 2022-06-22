@@ -40,8 +40,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "prepare": "cd .. && husky install front/.husky"
+    "lint:fix": "eslint --fix ."
   },
   "eslintConfig": {
     "extends": [
