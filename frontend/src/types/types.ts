@@ -1,3 +1,13 @@
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+export interface IRootReducer {
+  auth: IUser;
+  error: IError;
+  loading: TLoading;
+  settings: ISettingsState;
+}
+
 export interface IRegister {
   email: string;
   password: string;
@@ -9,6 +19,19 @@ export interface TLoading {
   isLoadingCreatePost: boolean;
   isLoadingGetUser: boolean;
   isLoadingFeed: boolean;
+}
+
+export interface IError {
+  status_code: number;
+  data: any;
+  error: {
+    message: string;
+    title: string;
+    type: string;
+  };
+  success: boolean;
+  timestamp: string | Date;
+  [prop: string]: any;
 }
 
 export interface IUser {
