@@ -11,7 +11,9 @@ const Navbar = () => {
   React.useEffect(() => {
     fetchData();
   }, []);
-  return <div className="text-indigo-950 font-sans text-4xl">Navbar</div>;
+  return (
+    <div className="text-indigo-950 font-sans text-4xl underline">Navbar</div>
+  );
 };
 
 export default Navbar;
