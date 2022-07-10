@@ -13,7 +13,7 @@ export interface TLoading {
 
 export interface IUser {
   id: string;
-  username: string;
+  email: string;
   [prop: string]: any;
 }
 
