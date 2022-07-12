@@ -14,6 +14,12 @@ export interface IRegister {
   username: string;
 }
 
+export interface IErrorState {
+  authError: IError | null;
+  profileError: IError | null;
+  newsFeedError: IError | null;
+}
+
 export interface TLoading {
   isLoadingAuth: boolean;
   isLoadingCreatePost: boolean;
