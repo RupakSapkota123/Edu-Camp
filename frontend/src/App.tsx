@@ -1,8 +1,10 @@
+import { createBrowserHistory } from "history";
 import React from "react";
 import { Slide, ToastContainer } from "react-toastify";
 
 import * as Shared from "./components";
 
+export const history = createBrowserHistory();
 const App = () => {
   const [checkSession, setCheckSession] = React.useState(false);
   return checkSession ? (
