@@ -12,8 +12,8 @@
   },
   "scripts": {
     "start-client": "cd frontend && npm start",
-    "start-server": "cd server && npm dev",
-    "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
+    "start-server": "cd server && npm run dev",
+    "start": "concurrently \"yarn start-server\" \"yarn start-client\"",
     "init-project": "concurrently \"cd frontend && npm install\" \"cd server && npm install\""
   },
   "keywords": [],
